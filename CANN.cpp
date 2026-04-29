@@ -898,7 +898,7 @@ void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int
         for (int i = 0; i < chromosomeSize; ++i) {
             MyExcelFile2 << "Gene " << i + 1 << ",";
         }
-        MyExcelFile2 << "genetic Diversity" << "," << "best Overall" << "\n";
+        MyExcelFile2 << "Fitness Value" << "," << "Objective Value (distance)" << "\n";
         writePopulationToCSV(gen, MyExcelFile2, population);
         MyExcelFile2 << "best individual obtained overall run " << igen2 + 1 << "\n";
         for (int i = 0; i < chromosomeSize; ++i) {
