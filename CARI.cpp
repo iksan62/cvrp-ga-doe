@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -16,7 +15,6 @@
 #include <thread>
 #include <tuple>
 #include <numeric>
-
 #include <string>
 
 //This is CARI
@@ -37,20 +35,17 @@ double mutationRate = 0.01; // insert mutation rate
 double breederRate = 0.05; // insert breeder rate
 int run = 5;
 
-
 int numCities = coordinates.size();
 int chromosomeSize = numCities + numVehicle;
 int hammingDistance = 0; int totalhammingDistance = 0; double geneticDiversity;
 int multiply = 100;
 int GEN2 = 0; int genB = 0;
 
-
 struct Individual {
     std::vector<int> route; 
     double fitness = 0.0;   
     double totalTravelDistance = 0.0; 
 };
-
 
 struct IndividuDetail {
     int feasibility;         
@@ -998,17 +993,18 @@ int main() {
     return 0;
 }
 
+
 void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int numVehicle, int generations, int gen, const std::vector<std::pair<int, int>>& coordinates, const std::vector<std::pair<int, int>>& demand, int vehicleCapacity, const std::string& benchmarkID, const std::vector<std::vector<double>>& distanceMatrix, std::ofstream& MyExcelFile2) {
-        for (int i = 0; i < populationSize; ++i) {
+    for (int i = 0; i < populationSize; ++i) {
         bestOverall[i].route = std::vector<int>(chromosomeSize, 0);
         bestOverall[i].fitness = 0.0;
-        bestOverall[i].totalTravelDistance = std::numeric_limits<double>::infinity();  
+        bestOverall[i].totalTravelDistance = std::numeric_limits<double>::infinity();
     }
 
     for (int igen2 = 0; igen2 < run; ++igen2) {
         GEN2 = igen2;
         bestOverall[GEN2].totalTravelDistance = std::numeric_limits<double>::infinity();
-        std::cout << "\n\nGenerating Initial Population for Run " << igen2+1 << std::endl;
+        std::cout << "\n\nGenerating Initial Population for Run " << igen2 + 1 << std::endl;
         population = initializePopulation(populationSize, numCities, numVehicle, vehicleCapacity, demand, coordinates, benchmarkID, distanceMatrix);
         calculateFitness(population, distanceMatrix);
         findBestIndividual(population);
@@ -1016,20 +1012,20 @@ void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int
 
 
         MyExcelFile2 << "Starting of Run " << igen2 + 1 << "\n";
-        MyExcelFile2 << "Initial Population for run " << igen2+1 << "\n";
+        MyExcelFile2 << "Initial Population for run " << igen2 + 1 << "\n";
         gen = igen2;
 
-        MyExcelFile2 << "Generation" << ",";
-        for (int i = 0; i < chromosomeSize; ++i) { 
+        MyExcelFile2 << "Number of Individual" << ",";
+        for (int i = 0; i < chromosomeSize; ++i) {
             MyExcelFile2 << "Gene " << i + 1 << ",";
         }
         MyExcelFile2 << "Fitness Value" << "," << "Objective Value (distance)" << "\n";
-        writePopulationToCSV(gen, MyExcelFile2, population); 
+        writePopulationToCSV(gen, MyExcelFile2, population);
         std::fill(newPopulation.begin(), newPopulation.end(), Individual());
         MyExcelFile2 << "Objective Value (distance) obtained after GA process over generations" << "\n";
         MyExcelFile2 << "Generation" << ",";
         for (int i = 0; i < populationSize; ++i) {
-            MyExcelFile2 << "Individual " << i+1 << ",";
+            MyExcelFile2 << "Individual " << i + 1 << ",";
         }
         MyExcelFile2 << "genetic Diversity" << "," << "best Overall" << "\n";
 
@@ -1037,17 +1033,17 @@ void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int
             std::cout << "Roulette Wheel Selection\n";
             for (int i = 0; i < populationSize; ++i) {
                 Individual selectedIndividual = rouletteWheelSelection(population);
-                newPopulation[i] = selectedIndividual; 
+                newPopulation[i] = selectedIndividual;
             }
             population = newPopulation;
-            findBestIndividual(population);            
+            findBestIndividual(population);
             fillIndividuDetail();
-            std::cout << "Crossover\n";            
+            std::cout << "Crossover\n";
             proximityConstrainedSegmentCrossover();
             population = newPopulation;
             findBestIndividual(population);
             fillIndividuDetail();
-            std::cout << "Mutation\n";            
+            std::cout << "Mutation\n";
             constrainedTailExchangeMutation();
             population = newPopulation;
             findBestIndividual(population);
@@ -1058,18 +1054,18 @@ void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int
             population = newPopulation;
             fillIndividuDetail();
             findBestIndividual(population);
-            geneticDiversity = calculateGeneticDiversity(population);            
+            geneticDiversity = calculateGeneticDiversity(population);
             writeFitnessToCSV(gen, MyExcelFile2, population);
             std::cout << "-------------Generation " << gen + 1 << ", Run " << GEN2 + 1 << "-------------" << std::endl;
         }
         MyExcelFile2 << "\nIndividuals obtained at the last generation\n";
-        MyExcelFile2 << "Generation" << ",";
-        for (int i = 0; i < populationSize; ++i) {
-            MyExcelFile2 << "Individual " << i + 1 << ",";
+        MyExcelFile2 << "Number of Individual" << ",";
+        for (int i = 0; i < chromosomeSize; ++i) {
+            MyExcelFile2 << "Gene " << i + 1 << ",";
         }
         MyExcelFile2 << "genetic Diversity" << "," << "best Overall" << "\n";
         writePopulationToCSV(gen, MyExcelFile2, population);
-        MyExcelFile2 << "best individual obtained overall run "<< igen2+1 << "\n";
+        MyExcelFile2 << "best individual obtained overall run " << igen2 + 1 << "\n";
         for (int i = 0; i < chromosomeSize; ++i) {
             MyExcelFile2 << "Gene " << i + 1 << ",";
         }
@@ -1084,11 +1080,11 @@ void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int
 
         auto now = std::chrono::system_clock::now();
         std::time_t now_time = std::chrono::system_clock::to_time_t(now);
-        char buffer[26]; 
-        ctime_s(buffer, sizeof(buffer), &now_time);       
+        char buffer[26];
+        ctime_s(buffer, sizeof(buffer), &now_time);
         MyExcelFile2 << buffer;
         MyExcelFile2 << "\n";
-    }    
+    }
 }
 
 double calculateDistance(const std::pair<int, int>& point1, const std::pair<int, int>& point2) {
@@ -1108,18 +1104,18 @@ std::vector<std::vector<double>> calculateDistanceMatrix(const std::vector<std::
                 distanceMatrix[i][j] = 0.0;
             }
         }
-    }    
+    }
     return distanceMatrix;
 }
 
 int generateRandomNumber(int numCities, const std::set<int>& forbiddenNumbers) {
     static std::random_device rd;
     static std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(1, numCities - 1);  
+    std::uniform_int_distribution<> distrib(1, numCities - 1);
     int randomNumber;
     do {
-        randomNumber = distrib(gen);  
-    } while (forbiddenNumbers.find(randomNumber) != forbiddenNumbers.end()); 
+        randomNumber = distrib(gen);
+    } while (forbiddenNumbers.find(randomNumber) != forbiddenNumbers.end());
     return randomNumber;
 }
 
@@ -1127,7 +1123,7 @@ void printOnlyServedCities(const std::vector<int>& servedCities) {
     std::cout << "Served Cities Indexes: \n";
     for (size_t sc = 0; sc < servedCities.size(); ++sc) {
         if (servedCities[sc] == 1) {
-            std::cout << sc << " "; 
+            std::cout << sc << " ";
         }
     }
     std::cout << std::endl;
@@ -1135,12 +1131,12 @@ void printOnlyServedCities(const std::vector<int>& servedCities) {
 
 void printOnlyNotServedCities(const std::vector<int>& servedCities, const std::vector<std::pair<int, int>>& demanddescendingsort) {
     std::cout << "Not Served Cities Indexes: \n";
-        
-    int minDemand = INT_MAX; 
+
+    int minDemand = INT_MAX;
     int minDemandCityIndex = -1;
 
     for (size_t sc = 0; sc < servedCities.size(); ++sc) {
-        if (servedCities[sc] == 0) {  
+        if (servedCities[sc] == 0) {
             std::cout << "City Index: " << sc << ", Demand: " << demanddescendingsort[sc].second << std::endl;
 
             if (demanddescendingsort[sc].second < minDemand) {
@@ -1175,7 +1171,7 @@ int countServedCities(const std::vector<int>& servedCities) {
 
 void sortCitiesByDemand(vector<pair<int, int>>& cities) {
     sort(cities.begin(), cities.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
-        return a.second > b.second;  
+        return a.second > b.second;
         });
 }
 
@@ -1187,12 +1183,12 @@ void writePopulationToCSV(int gen, std::ofstream& file, const std::vector<Indivi
 
     for (size_t i = 0; i < population.size(); ++i) {
         const auto& ind = population[i];
-        file << gen << ",";
-     
+        file << i+1 << ",";
+
         for (size_t j = 0; j < ind.route.size(); ++j) {
             file << ind.route[j] << ",";
         }
-                file << ind.fitness << ",";
+        file << ind.fitness << ",";
         file << ind.totalTravelDistance << "\n";
     }
     file << "\n";
@@ -1204,8 +1200,8 @@ void writeFitnessToCSV(int gen, std::ofstream& file, const std::vector<Individua
         return;
     }
 
-    file << gen+1 << ",";
-    for (int i = 0; i < populationSize; ++i) {        
+    file << gen + 1 << ",";
+    for (int i = 0; i < populationSize; ++i) {
         file << population[i].totalTravelDistance << ",";
     }
     file << totalhammingDistance << "," << bestOverall[GEN2].totalTravelDistance << ",";
@@ -1218,7 +1214,7 @@ void writeIndividuDetailToCSV(std::ofstream& file, const std::vector<std::vector
         std::cerr << "Error: Gagal membuka file CSV!\n";
         return;
     }
-       
+
     file << "Individu,";
     for (int v = 0; v < numVehicle; ++v) {
         file << "Route, Feasibility, StartNode, EndNode, CurrentLoad, TravelDistance,";
@@ -1296,7 +1292,7 @@ void fillRouteDetail(const std::vector<std::vector<double>>& distanceMatrix) {
             std::cerr << "Error: j (" << j << ") melebihi ukuran checker (" << checker.size() << ") saat inisialisasi!" << std::endl;
             break;
         }
-        ++j;  
+        ++j;
 
         if (j >= checker.size()) {
             std::cerr << "Error: j (" << j << ") melebihi ukuran checker (" << checker.size() << ") setelah inkrementasi!" << std::endl;
@@ -1323,7 +1319,7 @@ void fillRouteDetail(const std::vector<std::vector<double>>& distanceMatrix) {
                 std::cerr << "Error: j (" << j << ") melebihi ukuran checker (" << checker.size() << ") dalam loop!" << std::endl;
                 break;
             }
-            node = checker[j];            
+            node = checker[j];
         }
 
         feasibility = (currentLoad <= vehicleCapacity) ? 1 : 0;
@@ -1345,7 +1341,7 @@ void fillRouteDetail(const std::vector<std::vector<double>>& distanceMatrix) {
     }
 }
 
-void fillIndividuDetail() {   
+void fillIndividuDetail() {
     for (int i = 0; i < populationSize; ++i) {
         int feasibility, currentLoad, startNode, endNode;
         double travelDistance;
@@ -1434,20 +1430,15 @@ double calculateGeneticDiversity(const std::vector<Individual>& population) {
             totalhammingDistance += hdistance;
             numPairs++;
         }
-    }    
+    }
     return static_cast<double>(totalhammingDistance) / numPairs;
 }
 
 int countVisitedCities(const Individual& individual) {
     std::unordered_set<int> visitedCities;
     for (int city : individual.route) {
-        visitedCities.insert(city); 
+        visitedCities.insert(city);
     }
     return visitedCities.size();
 }
-
-
-
-
-
 
