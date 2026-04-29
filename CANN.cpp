@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -16,7 +15,6 @@
 #include <thread>
 #include <tuple>
 #include <numeric>
-
 #include <string>
 
 //This is CANN
@@ -692,7 +690,6 @@ void constrainedTailExchangeMutation() {
     std::vector<std::tuple< int, int, int, int, double>> routeDetailIndividuMutation(numVehicle, { 0, 0, 0, 0, 0 });
     std::vector<std::tuple< int, int, int, int, double>> routeDetailIndividuMutationTemporary(numVehicle, { 0, 0, 0, 0, 0 });
 
-
     for (int i = 0; i < populationSize; ++i)
     {
         if (randomMutation[i] <= mutationRate) {
@@ -831,6 +828,7 @@ int main() {
     return 0;
 }
 
+
 void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int numVehicle, int generations, int gen, const std::vector<std::pair<int, int>>& coordinates, const std::vector<std::pair<int, int>>& demand, int vehicleCapacity, const std::string& benchmarkID, const std::vector<std::vector<double>>& distanceMatrix, std::ofstream& MyExcelFile2) {
     for (int i = 0; i < populationSize; ++i) {
         bestOverall[i].route = std::vector<int>(chromosomeSize, 0);
@@ -852,7 +850,7 @@ void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int
         MyExcelFile2 << "Initial Population for run " << igen2 + 1 << "\n";
         gen = igen2;
 
-        MyExcelFile2 << "Generation" << ",";
+        MyExcelFile2 << "Number of Individual" << ",";
         for (int i = 0; i < chromosomeSize; ++i) {
             MyExcelFile2 << "Gene " << i + 1 << ",";
         }
@@ -896,9 +894,9 @@ void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int
             std::cout << "-------------Generation " << gen + 1 << ", Run " << GEN2 + 1 << "-------------" << std::endl;
         }
         MyExcelFile2 << "\nIndividuals obtained at the last generation\n";
-        MyExcelFile2 << "Generation" << ",";
-        for (int i = 0; i < populationSize; ++i) {
-            MyExcelFile2 << "Individual " << i + 1 << ",";
+        MyExcelFile2 << "Number of Individual" << ",";
+        for (int i = 0; i < chromosomeSize; ++i) {
+            MyExcelFile2 << "Gene " << i + 1 << ",";
         }
         MyExcelFile2 << "genetic Diversity" << "," << "best Overall" << "\n";
         writePopulationToCSV(gen, MyExcelFile2, population);
@@ -941,7 +939,7 @@ std::vector<std::vector<double>> calculateDistanceMatrix(const std::vector<std::
                 distanceMatrix[i][j] = 0.0;
             }
         }
-    }    
+    }
     return distanceMatrix;
 }
 
@@ -1020,7 +1018,7 @@ void writePopulationToCSV(int gen, std::ofstream& file, const std::vector<Indivi
 
     for (size_t i = 0; i < population.size(); ++i) {
         const auto& ind = population[i];
-        file << gen << ",";
+        file << i+1 << ",";
 
         for (size_t j = 0; j < ind.route.size(); ++j) {
             file << ind.route[j] << ",";
@@ -1278,9 +1276,3 @@ int countVisitedCities(const Individual& individual) {
     }
     return visitedCities.size();
 }
-
-
-
-
-
-
