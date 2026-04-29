@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -16,7 +15,6 @@
 #include <thread>
 #include <tuple>
 #include <numeric>
-
 #include <string>
 
 //This is CAKNN4
