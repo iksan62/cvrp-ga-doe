@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -16,7 +15,6 @@
 #include <thread>
 #include <tuple>
 #include <numeric>
-
 #include <string>
 
 //This is CAKNN5
@@ -797,6 +795,7 @@ std::string formatDouble(double value, int precision = 2) {
     return out.str();
 }
 
+
 int main() {
 
     int gen = 0;
@@ -826,6 +825,7 @@ int main() {
     MyExcelFile2 << "crossover rate : " << crossoverRate << "," << "mutation rate : " << mutationRate << "," << "breeder rate : " << breederRate << "\n";
     distanceMatrix = calculateDistanceMatrix(coordinates, benchmarkID);
     geneticAlgorithm(populationSize, chromosomeSize, numCities, numVehicle, generations, gen, coordinates, demand, vehicleCapacity, benchmarkID, distanceMatrix, MyExcelFile2);
+
     std::cout << "Result has been saved on drive D:" << std::endl;
     return 0;
 }
@@ -851,7 +851,7 @@ void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int
         MyExcelFile2 << "Initial Population for run " << igen2 + 1 << "\n";
         gen = igen2;
 
-        MyExcelFile2 << "Generation" << ",";
+        MyExcelFile2 << "Number of Individual" << ",";
         for (int i = 0; i < chromosomeSize; ++i) {
             MyExcelFile2 << "Gene " << i + 1 << ",";
         }
@@ -895,9 +895,9 @@ void geneticAlgorithm(int populationSize, int chromosomeSize, int numCities, int
             std::cout << "-------------Generation " << gen + 1 << ", Run " << GEN2 + 1 << "-------------" << std::endl;
         }
         MyExcelFile2 << "\nIndividuals obtained at the last generation\n";
-        MyExcelFile2 << "Generation" << ",";
-        for (int i = 0; i < populationSize; ++i) {
-            MyExcelFile2 << "Individual " << i + 1 << ",";
+        MyExcelFile2 << "Number of Individual" << ",";
+        for (int i = 0; i < chromosomeSize; ++i) {
+            MyExcelFile2 << "Gene " << i + 1 << ",";
         }
         MyExcelFile2 << "genetic Diversity" << "," << "best Overall" << "\n";
         writePopulationToCSV(gen, MyExcelFile2, population);
@@ -940,7 +940,7 @@ std::vector<std::vector<double>> calculateDistanceMatrix(const std::vector<std::
                 distanceMatrix[i][j] = 0.0;
             }
         }
-    }    
+    }
     return distanceMatrix;
 }
 
@@ -1019,7 +1019,7 @@ void writePopulationToCSV(int gen, std::ofstream& file, const std::vector<Indivi
 
     for (size_t i = 0; i < population.size(); ++i) {
         const auto& ind = population[i];
-        file << gen << ",";
+        file << i+1 << ",";
 
         for (size_t j = 0; j < ind.route.size(); ++j) {
             file << ind.route[j] << ",";
@@ -1232,8 +1232,6 @@ void findBestIndividual(const std::vector<Individual>& population) {
             bestOverall[GEN2] = population[i];
         }
     }
-
-
 }
 
 double calculateDistance(const vector<int>& route, const vector<vector<double>>& distanceMatrix) {
@@ -1277,9 +1275,3 @@ int countVisitedCities(const Individual& individual) {
     }
     return visitedCities.size();
 }
-
-
-
-
-
-
